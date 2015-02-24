@@ -1,7 +1,7 @@
 import datetime
 import unittest
 
-import fernet_keyless
+import keyless_fernet
 
 
 VALID_TOKEN = (
@@ -11,7 +11,7 @@ VALID_TOKEN = (
 
 class TestValidToken(unittest.TestCase):
     def setUp(self):
-        self.token = fernet_keyless.Token(VALID_TOKEN)
+        self.token = keyless_fernet.Token(VALID_TOKEN)
 
     def test_version(self):
         self.assertEqual(128, self.token.version)
@@ -24,10 +24,10 @@ class TestValidToken(unittest.TestCase):
         forty_years = 40 * 52 * 7 * 24 * 60 * 60
         self.token.validate(ttl=forty_years)
 
-        twenty_years = 20 * 52 * 7 * 24 * 60 * 60
+        twenty_years = 29 * 52 * 7 * 24 * 60 * 60
         self.assertRaises(
-            fernet_keyless.ExpiredToken,
-            fernet_keyless.Token,
+            keyless_fernet.ExpiredToken,
+            keyless_fernet.Token,
             VALID_TOKEN,
             ttl=twenty_years)
 
@@ -50,20 +50,20 @@ class TestInvalidTokens(unittest.TestCase):
     def test_incorrect_padding(self):
         # this doesn't have the correct padding to be base64 encoded
         self.assertRaises(
-            fernet_keyless.InvalidToken,
-            fernet_keyless.Token,
+            keyless_fernet.InvalidToken,
+            keyless_fernet.Token,
             'foo')
 
     def test_unrecognized_version(self):
         # although this clearly isn't base64 encoded, it is padded correctly
         self.assertRaises(
-            fernet_keyless.UnrecognizedVersion,
-            fernet_keyless.Token,
+            keyless_fernet.UnrecognizedVersion,
+            keyless_fernet.Token,
             'asdf')
 
         # this token has the version manually set to 0x7F == 127
         self.assertRaises(
-            fernet_keyless.UnrecognizedVersion,
-            fernet_keyless.Token,
+            keyless_fernet.UnrecognizedVersion,
+            keyless_fernet.Token,
             'fwAAAABU7LJHAsotTpqP3tpAZ0zrJKiHFSJ8Z1I-S5ZCuAfBPpLKNaFHXoQeuba1n'
             'MROtB_kTDBlydZ2hj3_AqS34UE0_QXN4Q==')
