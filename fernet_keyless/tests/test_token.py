@@ -20,6 +20,17 @@ class TestValidToken(unittest.TestCase):
         expected_timestamp = datetime.datetime(1985, 10, 26, 8, 20, 0)
         self.assertEqual(expected_timestamp, self.token.timestamp)
 
+    def test_expiration(self):
+        forty_years = 40 * 52 * 7 * 24 * 60 * 60
+        self.token.validate(ttl=forty_years)
+
+        twenty_years = 20 * 52 * 7 * 24 * 60 * 60
+        self.assertRaises(
+            fernet_keyless.ExpiredToken,
+            fernet_keyless.Token,
+            VALID_TOKEN,
+            ttl=twenty_years)
+
     def test_iv(self):
         iv = '000102030405060708090a0b0c0d0e0f'
         self.assertEqual(iv, self.token.iv)

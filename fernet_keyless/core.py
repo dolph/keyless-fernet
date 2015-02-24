@@ -1,7 +1,8 @@
-import binascii
 import base64
+import binascii
 import datetime
 import struct
+import time
 
 
 # component lengths in bytes
@@ -34,25 +35,35 @@ class UnrecognizedVersion(InvalidToken):
     pass
 
 
+class ExpiredToken(InvalidToken):
+    pass
+
+
 class Token(object):
     """Parses as much of fernet tokens as possible without an encryption key.
 
     Specification: https://github.com/fernet/spec/blob/master/Spec.md
 
     """
-    def __init__(self, token):
+    def __init__(self, token, ttl=None):
         try:
             self._token = base64.urlsafe_b64decode(token)
         except:
             # this will most likely occur when the base64 padding is wrong
             raise InvalidToken('Token is not base64url encoded.')
 
-        self.validate()
+        self.validate(ttl)
 
-    def validate(self):
+    def validate(self, ttl=None):
         """Validate the token without using the encryption key."""
         if self.version != 128:
             raise UnrecognizedVersion('Token is not a recognized version.')
+
+        if ttl is not None:
+            age = time.time() - self.timestamp_int
+            if age > ttl:
+                raise ExpiredToken('Token expired %d seconds ago.' % (
+                    age - ttl))
 
     @property
     def version(self):
@@ -65,6 +76,14 @@ class Token(object):
         return ord(byte_str)
 
     @property
+    def timestamp_bytes(self):
+        return self._token[TIMESTAMP_START:TIMESTAMP_END]
+
+    @property
+    def timestamp_int(self):
+        return struct.unpack(">Q", self.timestamp_bytes)[0]
+
+    @property
     def timestamp(self):
         """Return the token's timestamp as a datetime object.
 
@@ -73,9 +92,7 @@ class Token(object):
         token was created.
 
         """
-        byte_str = self._token[TIMESTAMP_START:TIMESTAMP_END]
-        timestamp = struct.unpack(">Q", byte_str)[0]
-        return datetime.datetime.fromtimestamp(timestamp)
+        return datetime.datetime.fromtimestamp(self.timestamp_int)
 
     @property
     def iv(self):
