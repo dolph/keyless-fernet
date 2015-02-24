@@ -48,7 +48,7 @@ class Token(object):
     def __init__(self, token, ttl=None):
         try:
             self._token = base64.urlsafe_b64decode(token)
-        except:
+        except Exception:
             # this will most likely occur when the base64 padding is wrong
             raise InvalidToken('Token is not base64url encoded.')
 
