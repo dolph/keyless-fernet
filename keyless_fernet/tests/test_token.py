@@ -32,17 +32,18 @@ class TestValidToken(unittest.TestCase):
             ttl=twenty_years)
 
     def test_iv(self):
-        iv = '000102030405060708090a0b0c0d0e0f'
+        iv = b'000102030405060708090a0b0c0d0e0f'
         self.assertEqual(iv, self.token.iv)
 
     def test_ciphertext(self):
         ciphertext = (
-            '2d36d5ca46556299fde13008633804b2')
+            b'2d36d5ca46556299fde13008633804b2')
         self.assertEqual(ciphertext, self.token.ciphertext)
 
     def test_hmac(self):
         hmac = (
-            'c5ff9095f5d38f9ab86e5543e02686f03b3ec971b9ab47ae23566a54e08c2a0c')
+            b'c5ff9095f5d38f9ab86e5543e02686f03b3ec971b9ab47ae23566a54e08c2a0c'
+        )
         self.assertEqual(hmac, self.token.hmac)
 
 
