@@ -15,6 +15,9 @@ Usage
     >>> import keyless_fernet
     >>> t = keyless_fernet.Token(token)  # tokens are validated on init
     >>> t.validate(ttl=60)  # but you can also validate a token against any TTL
+    Traceback (most recent call last):
+      [...]
+    keyless_fernet.core.ExpiredToken: Token expired [...] seconds ago.
     >>> t.version  # retrieve the token's version, as an integer
     128
     >>> t.timestamp  # retrieve the token's timestamp, as a datetime
