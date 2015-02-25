@@ -25,3 +25,15 @@ Usage
     '2d36d5ca46556299fde13008633804b2'
     >>> t.hmac
     'c5ff9095f5d38f9ab86e5543e02686f03b3ec971b9ab47ae23566a54e08c2a0c'
+
+Testing
+-------
+
+.. image:: https://travis-ci.org/dolph/keyless-fernet.svg?branch=master
+    :target: https://travis-ci.org/dolph/keyless-fernet
+
+There are no external test dependencies.
+
+.. code:: bash
+
+    $ python -m unittest discover
