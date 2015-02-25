@@ -32,7 +32,7 @@ Testing
 .. image:: https://travis-ci.org/dolph/keyless-fernet.svg?branch=master
     :target: https://travis-ci.org/dolph/keyless-fernet
 
-There are no external test dependencies required:
+No external testing dependencies are required:
 
 .. code:: bash
 
