@@ -6,6 +6,10 @@ A Python library to parse `Fernet tokens <https://github.com/fernet>`_ as much
 as possible without using a key. This is useful for doing limited,
 non-cryptographic validation or introspection of Fernet tokens.
 
+If you have the Fernet key and need to validate or decrypt a Fernet token
+further, I recommend using `pypi/cryptography
+<https://cryptography.io/en/latest/fernet/>`_.
+
 Usage
 -----
 
