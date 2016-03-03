@@ -2,6 +2,9 @@
 keyless-fernet
 ==============
 
+.. image:: https://img.shields.io/pypi/v/keyless-fernet.svg
+   :target: https://pypi.python.org/pypi/keyless-fernet
+
 A Python library to parse `Fernet tokens <https://github.com/fernet>`_ as much
 as possible without using a key. This is useful for doing limited,
 non-cryptographic validation or introspection of Fernet tokens.
